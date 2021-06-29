@@ -54,6 +54,29 @@ public class JobData {
         return allJobs;
     }
 
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        //load data, if not already loaded
+        loadData();
+        //make results list to return
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+
+        for  (HashMap<String, String> job: allJobs) {
+            //returns all keys in map and makes key var
+            for (String key: job.keySet()) {
+                //check if key contains search term(value) from user
+                if (key.toLowerCase().contains(value.toLowerCase())) {
+                    results.add(job);
+                    //break;
+                }
+                else if(job.get(key).toLowerCase().contains(value.toLowerCase())) {
+                    results.add(job);
+                    break;
+                }
+            }
+        }
+        return results;
+    }
+
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
@@ -62,7 +85,7 @@ public class JobData {
      * with "Enterprise Holdings, Inc".
      *
      * @param column   Column that should be searched.
-     * @param value Value of teh field to search for
+     * @param value Value of the field to search for
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
@@ -75,8 +98,8 @@ public class JobData {
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
-
-            if (aValue.contains(value)) {
+            //added case insensitive
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
